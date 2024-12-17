@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome G-Hive Arena</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <header>
+        <div class="logo">G-Hive Arena</div>
+        <div class="hamburger" onclick="toggleMenu()">
+            <div></div>
+            <div></div>
+            <div></div>
+        </div>
+        <nav class="menu">
+            <a href="#performance-rating">Phone Performance</a>
+            <a href="#join">Enter Arena</a>
+            <a href="#teams">Teams</a>
+            <a href="#team-stats">Team Stats & Details</a>
+            <a href="#streaming">Spectate Game</a>
+        </nav>
+    </header>
+
+    <section id="home" class="hero">
+        <h1>Welcome to Our Friendly Gaming Tournaments</h1>
+        <p>Connect with amazing people and compete with gamers from around the world. Everyone is welcome!</p>
+        <button>Join Our Community</button>
+    </section>
+
+    <section id="countdown" class="countdown-section">
+        <h2>Countdown to the Ultimate Showdown</h2>
+        <div id="timer" class="timer-container">
+            <div class="timer-block">
+                <span id="days" class="timer-value">00</span>
+                <span class="timer-label">DAYS</span>
+            </div>
+            <div class="timer-block">
+                <span id="hours" class="timer-value">00</span>
+                <span class="timer-label">HOURS</span>
+            </div>
+            <div class="timer-block">
+                <span id="minutes" class="timer-value">00</span>
+                <span class="timer-label">MINUTES</span>
+            </div>
+            <div class="timer-block">
+                <span id="seconds" class="timer-value">00</span>
+                <span class="timer-label">SECONDS</span>
+            </div>
+        </div>
+    </section>
+
+    <section id="performance-rating" class="panel">
+        <h2>Your Device Performance</h2>
+        <div id="rating">
+            <div>Let's check your device's performance to make sure you're ready to play!</div>
+            <div class="progress-bar">
+                <div class="progress" id="progress"></div>
+            </div>
+            <div id="performance-result"></div>
+        </div>
+    </section>
+
+    <section id="join" class="panel">
+        <h2>Join the Event and Become Part of Our Gaming Family</h2>
+        <form id="join-form" action="data.php" method="POST" onsubmit="submitForm(event)">
+            <label for="name">Choose Arena User Name:</label>
+            <input type="text" id="name" name="name" required>
+            <label for="email">Active Email:</label>
+            <input type="email" id="email" name="email" required>
+            <button type="submit">Enter The Arena</button>
+        </form>
+        <p id="user-id" aria-live="polite">We’re excited to welcome you! Your User ID will appear here once you join.</p>
+        <!-- Added paragraphs for Arena ID and Entrant Position -->
+        <p id="arena-id" aria-live="polite"></p>
+        <p id="entrant-position" aria-live="polite"></p>
+    </section>
+
+    <section id="teams" class="panel">
+        <h2>Meet Our Amazing Teams</h2>
+        <div class="team">
+            <h3>Team Alpha</h3>
+            <p>A group of dedicated players, always bringing their best!</p>
+        </div>
+        <div class="team">
+            <h3>Team Beta</h3>
+            <p>A fun-loving team who always enjoys the game, no matter what!</p>
+        </div>
+    </section>
+
+    <section id="team-stats" class="panel">
+        <h2>Team Stats & Details</h2>
+        <div class="team-stats">
+            <p>Here's a brief overview of the teams' performance.</p>
+            <button class="see-details-btn">See Details</button>
+            <div id="team-stats-details" class="hidden">
+                <p>More detailed statistics on each team's performance and rankings...</p>
+            </div>
+        </div>
+    </section>
+
+    <section id="arena-performance" class="panel">
+        <h2>Arena Stats & Performance</h2>
+        <p>View the current performance of the arena...</p>
+        <button class="see-details-btn">See Details</button>
+        <div id="arena-performance-details" class="hidden">
+            <p>Detailed arena statistics, including total entrants, wins, losses, and more...</p>
+        </div>
+    </section>
+
+    <section id="join-count" class="panel">
+        <h2>Total Players Joining</h2>
+        <div id="total-joins">Loading...</div>
+    </section>
+
+    <section id="streaming" class="panel">
+        <h2>Live Stream – Come Watch and Cheer!</h2>
+        <div id="live-stream">Join the live stream and be part of the excitement. We’re all in this together!</div>
+    </section>
+
+    <section id="streaming-selector-section" class="panel">
+        <h3>Select Your Streaming Platform</h3>
+        <label for="streaming-selector">Choose Streaming Platform:</label>
+        <select id="streaming-selector">
+            <option value="twitch">Twitch</option>
+            <option value="youtube">YouTube</option>
+        </select>
+
+        <div id="streaming-info">
+            <p id="streaming-description">Choose a platform to see the streaming link.</p>
+            <div id="streaming-link" class="hidden">
+                <a href="" target="_blank" id="streaming-url" class="platform-link">Watch on</a>
+            </div>
+        </div>
+    </section>
+
+    <footer id="footer">
+        <h3>Follow us on our Platforms</h3>
+        <div id="platform-links">
+            <a href="https://discord.com/" target="_blank" class="platform-link discord" title="Discord">
+                <i class="fab fa-discord"></i>
+            </a>
+            <a href="https://wa.me/" target="_blank" class="platform-link whatsapp" title="WhatsApp">
+                <i class="fab fa-whatsapp"></i>
+            </a>
+            <a href="https://www.instagram.com/" target="_blank" class="platform-link instagram" title="Instagram">
+                <i class="fab fa-instagram"></i>
+            </a>
+            <a href="https://www.twitch.tv/" target="_blank" class="platform-link twitch" title="Twitch">
+                <i class="fab fa-twitch"></i>
+            </a>
+            <a href="https://www.facebook.com/" target="_blank" class="platform-link facebook" title="Facebook">
+                <i class="fab fa-facebook"></i>
+            </a>
+            <a href="https://x.com/" target="_blank" class="platform-link x" title="Twitter (X)">
+                <i class="fab fa-x"></i>
+            </a>
+        </div>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Countdown Timer
+            const timer = document.getElementById('timer');
+            if (timer) {
+                const countdownDate = new Date("2024-12-25T19:00:00Z").getTime();  // Target date: 25th Dec 2024, 7 PM UTC
+
+                // Function to update the countdown every second
+                const countdownInterval = setInterval(() => {
+                    const now = new Date().getTime();  // Current time
+                    const distance = countdownDate - now;  // Time remaining until target date
+
+                    const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                    const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                    const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                    const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                    // Update the countdown display
+                    timer.innerHTML = `${days}d ${hours}h ${minutes}m ${seconds}s`;
+
+                    // When countdown is finished
+                    if (distance < 0) {
+                        clearInterval(countdownInterval);
+                        timer.innerHTML = "EXPIRED";
+                    }
+                }, 1000);
+            }
+
+            // Join Form and User ID
+            const joinForm = document.getElementById('join-form');
+            const arenaIDElement = document.getElementById('arena-id');
+            const entrantPositionElement = document.getElementById('entrant-position');
+            const joinButton = document.querySelector('button[type="submit"]');
+
+            if (joinForm && joinButton) {
+                joinButton.addEventListener('click', (e) => {
+                    e.preventDefault(); // Prevent the button from doing a default action (like submitting the form)
+
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+
+                    // Validate the fields before submitting
+                    if (!name || !email) {
+                        alert("Please fill in both username and email.");
+                        return;
+                    }
+
+                    const formData = new FormData();
+                    formData.append("name", name);
+                    formData.append("email", email);
+
+                    // Send the form data to 'data.php' via fetch API
+                    fetch(joinForm.action, {
+                        method: 'POST',
+                        body: formData // Send the form data
+                    })
+                    .then(response => response.json()) // Parse response as JSON
+                    .then(data => {
+                        console.log(data); // Log the response for debugging
+
+                        if (data.status === 'success') {
+                            const arenaID = data.arenaID;
+                            const totalEntrants = data.totalEntrants;
+
+                            // Update Arena ID and Entrant Position
+                            arenaIDElement.textContent = `Your Arena ID: ${arenaID}`;
+                            entrantPositionElement.textContent = `You are entrant number: ${totalEntrants}`;
+
+                            // Update Total Entrants
+                            document.getElementById('total-joins').textContent = `Total Entrants: ${totalEntrants}`;
+                        } else {
+                            alert('Error: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        alert("An error occurred: " + error);
+                    });
+                });
+            }
+
+            // Streaming Selector
+            const streamingSelector = document.getElementById('streaming-selector');
+            const streamingLinkContainer = document.getElementById('streaming-link');
+            const streamingUrl = document.getElementById('streaming-url');
+            const streamingDescription = document.getElementById('streaming-description');
+
+            streamingSelector.addEventListener('change', () => {
+                const selectedPlatform = streamingSelector.value;
+
+                streamingLinkContainer.classList.remove('hidden');
+
+                if (selectedPlatform === 'twitch') {
+                    streamingDescription.textContent = 'Watch live on Twitch:';
+                    streamingUrl.href = 'https://www.twitch.tv/';
+                    streamingUrl.textContent = 'Go to Twitch';
+                } else if (selectedPlatform === 'youtube') {
+                    streamingDescription.textContent = 'Watch live on YouTube:';
+                    streamingUrl.href = 'https://www.youtube.com/live';
+                    streamingUrl.textContent = 'Go to YouTube Live';
+                }
+            });
+
+            streamingDescription.textContent = 'Choose a platform to see the streaming link.';
+            streamingLinkContainer.classList.add('hidden');
+        });
+
+        // Mobile hamburger menu toggle
+        function toggleMenu() {
+            const menu = document.querySelector('.menu');
+            menu.classList.toggle('active');
+        }
+    </script>
+
+    <script src="script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,16 @@
+Arena ID: GHAE-00001, Name: welly, Email: welly@example.com
+Arena ID: GHAE-00002, Name: trx, Email: trx@example.com
+Arena ID: GHAE-00003, Name: gamexbee, Email: gamexbee@example.com
+Arena ID: GHAE-00004, Name: willows, Email: willows@example.com
+Arena ID: GHAE-00005, Name: barry, Email: barry@example.com
+Arena ID: GHAE-00006, Name: meanergun, Email: meanergun@example.com
+Arena ID: GHAE-00007, Name: winner, Email: Winner@example.com
+Arena ID: GHAE-00008, Name: billaz1, Email: billaz@example.com
+Arena ID: GHAE-00009, Name: WELLAMAN, Email: WELLAMAN@example.com
+Arena ID: GHAE-00010, Name: performance, Email: performance@example.com
+Arena ID: GHAE-00011, Name: device, Email: device@example.com
+Arena ID: GHAE-00012, Name: were, Email: were@example.com
+Arena ID: GHAE-00013, Name: briangunner, Email: briangunner@example.com
+Arena ID: GHAE-00014, Name: ogunkolo, Email: ogunkolo@example.com
+Arena ID: GHAE-00015, Name: firerain, Email: firerain@example.com
+Arena ID: GHAE-00016, Name: index, Email: index@example.com
