@@ -81,12 +81,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const entrantPositionValue = document.getElementById('entrant-position-value');
     const closePopupButton = document.getElementById('close-popup');
 
+    // Debugging form submission
     if (joinForm && joinButton) {
         joinButton.addEventListener('click', (e) => {
-            e.preventDefault(); // Prevent the button from doing a default action (like submitting the form)
+            e.preventDefault(); // Prevent the default form submission
 
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
+
+            console.log("Form Submitted:", { name, email });
 
             // Validate the fields before submitting
             if (!name || !email) {
@@ -103,9 +106,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 body: formData // Send the form data
             })
-            .then(response => response.json()) // Parse response as JSON
+            .then(response => response.json()) // Parse the response as JSON
             .then(data => {
-                console.log(data); // Log the response for debugging
+                console.log('Response from server:', data); // Log the response
 
                 if (data.status === 'success') {
                     const arenaID = data.arenaID;
@@ -126,7 +129,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Display the pop-up
                     arenaPopup.classList.remove('hidden');
                 } else {
-                    alert(data.message || 'There was an error joining the arena.'); // Show error message if not successful
+                    alert(data.message || 'There was an error joining the arena.');
                 }
             })
             .catch(error => {
