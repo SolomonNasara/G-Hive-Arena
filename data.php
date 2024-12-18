@@ -2,7 +2,7 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-$filePath = 'joiners.json';
+$filePath = '/tmp/joiners.json';
 
 // Function to read the total number of entrants from the JSON file
 function getTotalEntrants($filePath) {
