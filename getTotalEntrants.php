@@ -1,5 +1,5 @@
 <?php
-$filePath = 'tmp/joiners.json';
+$filePath = 'joiners.json';
 
 // Function to read the total number of entrants from the file
 function getTotalEntrants($filePath) {
