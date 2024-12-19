@@ -2,14 +2,15 @@
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
 
-$filePath = '/tmp/joiners.json';
+$filePath = 'joiners.json';
+$teams = ['Hive Masters', 'Hive Kings', 'Hive Legends', 'Hive Dominators'];
 
-// Function to read the total number of entrants from the JSON file
+// Function to read the total number of entrants from the file
 function getTotalEntrants($filePath) {
     if (file_exists($filePath)) {
         $data = file_get_contents($filePath);
-        $jsonData = json_decode($data, true);  // Decode the JSON data to an associative array
-        return count($jsonData); // Return the number of valid entries
+        $lines = array_filter(explode("\n", trim($data))); // Filter out empty lines
+        return count($lines); // Return the number of valid entries
     }
     return 0; // No data found
 }
@@ -20,41 +21,42 @@ function generateArenaID($filePath) {
     return "GHAE-" . str_pad($totalEntrants + 1, 5, '0', STR_PAD_LEFT); // Generates GHAE-00001, GHAE-00002, etc.
 }
 
-// Function to check if the email already exists in the JSON file
+// Function to check if the email already exists in the file
 function isEmailAlreadyRegistered($filePath, $email) {
     if (file_exists($filePath)) {
         $data = file_get_contents($filePath);
-        $jsonData = json_decode($data, true); // Decode the JSON data
-        foreach ($jsonData as $entry) {
-            if ($entry['email'] === $email) {
-                return true; // Email is already registered
-            }
-        }
+        return strpos($data, $email) !== false; // Search for the email within the file data
     }
     return false;
 }
 
-// Function to save user data to the JSON file
-function saveUserData($filePath, $name, $email, $arenaID) {
-    $userData = [
-        'arenaID' => $arenaID,
-        'name' => $name,
-        'email' => $email
-    ];
+// Function to save user data to the file
+function saveUserData($filePath, $name, $email, $arenaID, $team) {
+    $userData = "Arena ID: $arenaID, Name: $name, Email: $email, Team: $team\n";
     
-    $jsonData = [];
-    
-    // Read existing data from JSON file if it exists
-    if (file_exists($filePath)) {
-        $data = file_get_contents($filePath);
-        $jsonData = json_decode($data, true);  // Decode existing data to associative array
+    // Open the file and lock it for writing
+    $fp = fopen($filePath, 'a');
+    if ($fp === false) {
+        echo json_encode(['status' => 'error', 'message' => 'Unable to open the file.']);
+        exit;
     }
 
-    // Append the new user data
-    $jsonData[] = $userData;
+    // Try to lock the file before writing
+    if (flock($fp, LOCK_EX)) {
+        fwrite($fp, $userData);
+        flock($fp, LOCK_UN); // Release the lock
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Unable to lock the file.']);
+        fclose($fp);
+        exit;
+    }
 
-    // Save the updated data back to the JSON file
-    file_put_contents($filePath, json_encode($jsonData, JSON_PRETTY_PRINT));
+    fclose($fp);
+}
+
+// Function to assign a team based on the total entrants
+function assignTeam($totalEntrants, $teams) {
+    return $teams[$totalEntrants % count($teams)];
 }
 
 // Handle POST request
@@ -80,17 +82,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Generate a new Arena ID
         $arenaID = generateArenaID($filePath);
 
-        // Save to JSON file
-        saveUserData($filePath, $name, $email, $arenaID);
-
-        // Update the total number of entrants
+        // Assign team based on the total number of entrants
         $totalEntrants = getTotalEntrants($filePath);
+        $team = assignTeam($totalEntrants, $teams);
+
+        // Save to text file
+        saveUserData($filePath, $name, $email, $arenaID, $team);
 
         // Return success response in JSON format
         echo json_encode([
             'status' => 'success',
             'arenaID' => $arenaID,
-            'totalEntrants' => $totalEntrants
+            'totalEntrants' => $totalEntrants,
+            'team' => $team
         ]);
     } else {
         echo json_encode(['status' => 'error', 'message' => 'Missing required fields.']);
