@@ -44,13 +44,21 @@
     </section>
 
     <section id="join" class="panel">
-        <h2>Join the Event and Become Part of Our Gaming Family</h2>
-        <form id="join-form" action="send_email.php" method="POST">
-            <label for="name">Choose Arena User Name:</label>
-            <input type="text" id="name" name="name" required>
-            <label for="email">Active Email:</label>
-            <input type="email" id="email" name="email" required>
-            <button type="submit">Enter The Arena</button>
+        <h2>Enter The Arena</h2>
+        <!-- Updated form to use Formspree -->
+        <form action="https://formspree.io/f/xbljnzda" method="POST">
+            <label>
+                Your email:<br>
+                <input type="email" name="email">
+            </label>
+            <br>
+            <label>
+                Choose Arena Username:<br>
+                <textarea name="message"></textarea>
+            </label>
+            <br>
+            <!-- your other form fields go here -->
+            <button type="submit">Send</button>
         </form>
         <p id="user-id" aria-live="polite">We’re excited to welcome you! Your User ID will appear here once you join.</p>
         <p id="arena-id" aria-live="polite"></p>
@@ -59,7 +67,14 @@
 
     <section id="teams" class="panel">
         <h2>Meet Our Amazing Teams</h2>
-        <div id="teams-container"></div>
+        <div class="team">
+            <h3>Team Alpha</h3>
+            <p>A group of dedicated players, always bringing their best!</p>
+        </div>
+        <div class="team">
+            <h3>Team Beta</h3>
+            <p>A fun-loving team who always enjoys the game, no matter what!</p>
+        </div>
     </section>
 
     <section id="team-stats" class="panel">
@@ -172,25 +187,6 @@
                 .catch(error => {
                     alert("An error occurred: " + error);
                 });
-            });
-
-            // Teams Dynamic Section
-            const teams = [
-                { name: 'Hive Masters', description: 'A team of elite players, always striving for victory!' },
-                { name: 'Hive Kings', description: 'Our regal competitors with the best strategy and tactics!' },
-                { name: 'Hive Legends', description: 'Legendary players who bring honor and skill to every match!' },
-                { name: 'Hive Dominators', description: 'The unstoppable force of the G-Hive Arena, dominating every game!' }
-            ];
-
-            const teamsContainer = document.getElementById('teams-container');
-            teams.forEach(team => {
-                const teamElement = document.createElement('div');
-                teamElement.classList.add('team');
-                teamElement.innerHTML = `
-                    <h3>${team.name}</h3>
-                    <p>${team.description}</p>
-                `;
-                teamsContainer.appendChild(teamElement);
             });
         });
 
