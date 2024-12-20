@@ -21,7 +21,6 @@
             <a href="#performance-rating">Phone Performance</a>
             <a href="#join">Enter Arena</a>
             <a href="#teams">Teams</a>
-            <a href="#team-stats">Team Stats & Details</a>
             <a href="#streaming">Spectate Game</a>
         </nav>
     </header>
@@ -44,8 +43,7 @@
     </section>
 
     <section id="join" class="panel">
-        <h2>Enter The Arena</h2>
-        <!-- Updated form to use Formspree -->
+        <h2>Join the Event and Become Part of Our Gaming Family</h2>
         <form action="https://formspree.io/f/xbljnzda" method="POST">
             <label>
                 Your email:<br>
@@ -60,40 +58,29 @@
             <!-- your other form fields go here -->
             <button type="submit">Send</button>
         </form>
-        <p id="user-id" aria-live="polite">We’re excited to welcome you! Your User ID will appear here once you join.</p>
+        <p id="user-id" aria-live="polite">We’re excited to welcome you! Your User ID will appear here once you join.
+        </p>
         <p id="arena-id" aria-live="polite"></p>
         <p id="entrant-position" aria-live="polite"></p>
     </section>
 
     <section id="teams" class="panel">
-        <h2>Meet Our Amazing Teams</h2>
+        <h2>Hive TEAMS</h2>
         <div class="team">
-            <h3>Team Alpha</h3>
-            <p>A group of dedicated players, always bringing their best!</p>
+            <h3>Hive Masters</h3>
+            <p>A team of skilled and dedicated players who always bring their A-game!</p>
         </div>
         <div class="team">
-            <h3>Team Beta</h3>
-            <p>A fun-loving team who always enjoys the game, no matter what!</p>
+            <h3>Hive Kings</h3>
+            <p>Masters of strategy, always one step ahead in the game!</p>
         </div>
-    </section>
-
-    <section id="team-stats" class="panel">
-        <h2>Team Stats & Details</h2>
-        <div class="team-stats">
-            <p>Here's a brief overview of the teams' performance.</p>
-            <button class="see-details-btn">See Details</button>
-            <div id="team-stats-details" class="hidden">
-                <p>More detailed statistics on each team's performance and rankings...</p>
-            </div>
+        <div class="team">
+            <h3>Hive Legends</h3>
+            <p>Veterans of the arena, with a legacy that speaks for itself!</p>
         </div>
-    </section>
-
-    <section id="arena-performance" class="panel">
-        <h2>Arena Stats & Performance</h2>
-        <p>View the current performance of the arena...</p>
-        <button class="see-details-btn">See Details</button>
-        <div id="arena-performance-details" class="hidden">
-            <p>Detailed arena statistics, including total entrants, wins, losses, and more...</p>
+        <div class="team">
+            <h3>Hive Dominators</h3>
+            <p>Dominating the arena, one match at a time!</p>
         </div>
     </section>
 
@@ -129,7 +116,8 @@
             <a href="https://discord.gg/2tnRbC9xRa" target="_blank" class="platform-link discord" title="Discord">
                 <i class="fab fa-discord"></i>
             </a>
-            <a href="https://whatsapp.com/channel/0029Vb0LOLdI7BeIAKf6qC3o" target="_blank" class="platform-link whatsapp" title="WhatsApp">
+            <a href="https://whatsapp.com/channel/0029Vb0LOLdI7BeIAKf6qC3o" target="_blank"
+                class="platform-link whatsapp" title="WhatsApp">
                 <i class="fab fa-whatsapp"></i>
             </a>
             <a href="#" target="_blank" class="platform-link instagram" title="Instagram">
@@ -165,7 +153,7 @@
                     return;
                 }
 
-                // Send form data to PHP using fetch
+                // Send form data to Formspree
                 const formData = new FormData();
                 formData.append("name", name);
                 formData.append("email", email);
@@ -174,19 +162,19 @@
                     method: 'POST',
                     body: formData
                 })
-                .then(response => response.json()) // Parse the response as JSON
-                .then(data => {
-                    if (data.status === 'success') {
-                        // Update Arena ID and Entrant Position
-                        arenaIDElement.textContent = `Your Arena ID: ${data.arenaID}`;
-                        entrantPositionElement.textContent = `You are entrant number: ${data.totalEntrants}`;
-                    } else {
-                        alert('Error: ' + data.message);
-                    }
-                })
-                .catch(error => {
-                    alert("An error occurred: " + error);
-                });
+                    .then(response => response.json()) // Parse the response as JSON
+                    .then(data => {
+                        if (data.status === 'success') {
+                            // Update Arena ID and Entrant Position
+                            arenaIDElement.textContent = `Your Arena ID: ${data.arenaID}`;
+                            entrantPositionElement.textContent = `You are entrant number: ${data.totalEntrants}`;
+                        } else {
+                            alert('Error: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        alert("An error occurred: " + error);
+                    });
             });
         });
 
