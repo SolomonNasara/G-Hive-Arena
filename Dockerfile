@@ -1,19 +1,17 @@
-# Use an official PHP image with Apache support
+# Use official PHP image as base
 FROM php:8.0-apache
 
-# Enable mod_rewrite for Apache
-RUN a2enmod rewrite
+# Install any necessary PHP extensions
+RUN docker-php-ext-install mysqli pdo pdo_mysql
 
-# Set the working directory inside the container
-WORKDIR /var/www/html
-
-# Copy the project files into the container's /var/www/html directory
+# Copy your PHP files to the Apache server's root directory
 COPY . /var/www/html/
 
-# Expose port 80 (default port for Apache)
+# Enable mod_rewrite for URL rewriting if needed
+RUN a2enmod rewrite
+
+# Expose port 80 (the default HTTP port)
 EXPOSE 80
 
-# Start Apache in the foreground
+# Run Apache in the foreground
 CMD ["apache2-foreground"]
-
-RUN chmod 666 joiners.txt
