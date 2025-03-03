@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ARENA Entry Pass</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background-color: #121212;
+            color: #fff;
+            padding: 50px;
+        }
+        .container {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            display: none; /* Hidden until verification passes */
+        }
+        h1 {
+            color: #FFD700;
+        }
+        .ticket {
+            font-size: 24px;
+            font-weight: bold;
+            background: #FFD700;
+            color: #222;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        // Get the token from the URL
+        const urlParams = new URLSearchParams(window.location.search);
+        const token = urlParams.get('token');
+
+        if (!token) {
+            alert("Unauthorized Access! Redirecting...");
+            window.location.href = "https://yourdomain.com/";
+        } else {
+            // Verify payment with Paystack API
+            fetch(`https://api.paystack.co/transaction/verify/${token}`, {
+                method: "GET",
+                headers: {
+                    "Authorization": "Bearer YOUR_SECRET_KEY" // Replace with your actual Paystack secret key
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status && data.data.status === "success") {
+                    // Show the container since payment is verified
+                    document.querySelector(".container").style.display = "inline-block";
+
+                    // Generate a unique ARENA Entry Pass ID
+                    document.getElementById("ticketNumber").innerText = "ARENA-" + Math.floor(10000 + Math.random() * 90000);
+                } else {
+                    alert("Payment verification failed! Redirecting...");
+                    window.location.href = "https://yourdomain.com/";
+                }
+            })
+            .catch(error => {
+                console.error("Error verifying payment:", error);
+                alert("Error verifying payment. Redirecting...");
+                window.location.href = "https://yourdomain.com/";
+            });
+        }
+    </script>
+
+    <div class="container">
+        <h1>Payment Successful!</h1>
+        <p>Your spot is secured—get ready for battle!</p>
+        <p>Your Arena Entry Pass:</p>
+        <div class="ticket" id="ticketNumber"></div>
+        <p>Join our WhatsApp group to confirm your entry:</p>
+        <a class="whatsapp-btn" href="https://chat.whatsapp.com/YOUR-GROUP-LINK" target="_blank">Join WhatsApp Group</a>
+    </div>
+</body>
+</html>
