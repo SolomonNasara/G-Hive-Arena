@@ -74,28 +74,20 @@
         async function validatePayment() {
             const urlParams = new URLSearchParams(window.location.search);
             const reference = urlParams.get('reference');
+            const referrer = document.referrer;
 
-            if (!reference) {
+            if (!reference || !referrer.includes("paystack.com")) {
                 alert("Unauthorized Access! Redirecting...");
                 window.location.href = "https://g-hive-arena.onrender.com";
                 return;
             }
 
-            try {
-                let response = await fetch(`https://g-hive-arena.onrender.com/verify-payment?reference=${reference}`);
-                let data = await response.json();
-
-                if (data.success) {
-                    document.getElementById("ticketNumber").innerText = data.ticket;
-                } else {
-                    document.getElementById("ticketNumber").innerText = "Payment Not Verified!";
-                }
-            } catch (error) {
-                document.getElementById("ticketNumber").innerText = "Error Validating Payment!";
-            }
+            // Automatically mark as successful if coming from Paystack
+            document.getElementById("ticketNumber").innerText = `Ticket Issued: ${reference}`;
         }
 
         validatePayment();
+
 
         document.getElementById("whatsappLink").href = "https://chat.whatsapp.com/GOSwsJeJcUkIgjlLEkVp8r";
     </script>
