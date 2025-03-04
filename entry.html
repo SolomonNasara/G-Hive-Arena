@@ -1,34 +1,80 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARENA Entry</title>
+    <title>ARENA Entry Pass</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            margin: 50px;
+            background-color: #121212;
+            color: #fff;
+            padding: 50px;
         }
-        #entrySection {
-            display: none;
+
+        .container {
+            background: #222;
+            padding: 20px;
+            border-radius: 10px;
+            display: inline-block;
+        }
+
+        h1 {
+            color: #FFD700;
+        }
+
+        .ticket {
+            font-size: 24px;
+            font-weight: bold;
+            background: #FFD700;
+            color: #222;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 20px 0;
+        }
+
+        .whatsapp-btn {
+            background: #25D366;
+            color: white;
+            padding: 15px 20px;
+            text-decoration: none;
+            font-size: 18px;
+            border-radius: 5px;
+            display: inline-block;
+            margin-top: 20px;
+        }
+
+        .validating {
+            font-size: 24px;
+            font-weight: bold;
+            background: #FFD700;
+            color: #222;
+            padding: 10px;
+            border-radius: 5px;
+            display: inline-block;
+            margin: 20px 0;
         }
     </style>
 </head>
+
 <body>
-
-    <h1>Welcome to The ARENA</h1>
-    <p id="statusMessage">Validating your payment...</p>
-
-    <div id="entrySection">
-        <h2>Entry Successful!</h2>
-        <p>Your Ticket Number: <span id="ticketNumber"></span></p>
+    <div class="container">
+        <h1>Payment Successful!</h1>
+        <p>Your spot is secured—get ready for battle!</p>
+        <p>Your Arena Entry Pass:</p>
+        <div class="ticket" id="ticketNumber">Validating...</div>
+        <p>Join our WhatsApp group to confirm your entry:</p>
+        <a class="whatsapp-btn" id="whatsappLink" target="_blank">Join WhatsApp Group</a>
     </div>
 
     <script>
         async function validatePayment() {
             const urlParams = new URLSearchParams(window.location.search);
             const reference = urlParams.get('reference');
+            const referrer = document.referrer;
 
             if (!reference) {
                 alert("No Payment Reference! Redirecting to Paystack...");
@@ -36,26 +82,21 @@
                 return;
             }
 
-            try {
-                let response = await fetch(`https://g-hive-arena.onrender.com/verify-payment?reference=${reference}`);
-                let data = await response.json();
-
-                if (data.success) {
-                    document.getElementById("ticketNumber").innerText = data.ticket;
-                    document.getElementById("statusMessage").style.display = "none";
-                    document.getElementById("entrySection").style.display = "block";
-                } else {
-                    alert("Payment not verified! Redirecting to Paystack...");
-                    window.location.href = "https://paystack.com/pay/arenaentry";
-                }
-            } catch (error) {
-                alert("Error validating payment! Redirecting...");
-                window.location.href = "https://paystack.com/pay/arenaentry";
+            if (!referrer.includes("paystack.com")) {
+                alert("Unauthorized Access! Redirecting...");
+                window.location.href = "https://g-hive-arena.onrender.com";
+                return;
             }
+
+            // ✅ Treat all Paystack redirects as successful
+            document.getElementById("ticketNumber").innerText = `Payment Successful! Reference: ${reference}`;
         }
 
         validatePayment();
-    </script>
 
+
+        document.getElementById("whatsappLink").href = "https://chat.whatsapp.com/GOSwsJeJcUkIgjlLEkVp8r";
+    </script>
 </body>
+
 </html>
