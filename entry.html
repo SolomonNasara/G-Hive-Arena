@@ -1,73 +1,28 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ARENA Entry Pass</title>
+    <title>ARENA Entry</title>
     <style>
         body {
             font-family: Arial, sans-serif;
             text-align: center;
-            background-color: #121212;
-            color: #fff;
-            padding: 50px;
+            margin: 50px;
         }
-
-        .container {
-            background: #222;
-            padding: 20px;
-            border-radius: 10px;
-            display: inline-block;
-        }
-
-        h1 {
-            color: #FFD700;
-        }
-
-        .ticket {
-            font-size: 24px;
-            font-weight: bold;
-            background: #FFD700;
-            color: #222;
-            padding: 10px;
-            border-radius: 5px;
-            display: inline-block;
-            margin: 20px 0;
-        }
-
-        .whatsapp-btn {
-            background: #25D366;
-            color: white;
-            padding: 15px 20px;
-            text-decoration: none;
-            font-size: 18px;
-            border-radius: 5px;
-            display: inline-block;
-            margin-top: 20px;
-        }
-
-        .validating {
-            font-size: 24px;
-            font-weight: bold;
-            background: #FFD700;
-            color: #222;
-            padding: 10px;
-            border-radius: 5px;
-            display: inline-block;
-            margin: 20px 0;
+        #entrySection {
+            display: none;
         }
     </style>
 </head>
-
 <body>
-    <div class="container">
-        <h1>Payment Successful!</h1>
-        <p>Your spot is secured—get ready for battle!</p>
-        <p>Your Arena Entry Pass:</p>
-        <div class="ticket" id="ticketNumber">Validating...</div>
-        <p>Join our WhatsApp group to confirm your entry:</p>
-        <a class="whatsapp-btn" id="whatsappLink" target="_blank">Join WhatsApp Group</a>
+
+    <h1>Welcome to The ARENA</h1>
+    <p id="statusMessage">Validating your payment...</p>
+
+    <div id="entrySection">
+        <h2>Entry Successful!</h2>
+        <p>Your Ticket Number: <span id="ticketNumber"></span></p>
     </div>
 
     <script>
@@ -86,8 +41,9 @@
                 let data = await response.json();
 
                 if (data.success) {
-                    document.getElementById("ticketNumber").innerText = `Ticket Number: ${data.ticket}`;
-                    document.getElementById("entrySection").style.display = "block"; // Ensure the entry section is visible
+                    document.getElementById("ticketNumber").innerText = data.ticket;
+                    document.getElementById("statusMessage").style.display = "none";
+                    document.getElementById("entrySection").style.display = "block";
                 } else {
                     alert("Payment not verified! Redirecting to Paystack...");
                     window.location.href = "https://paystack.com/pay/arenaentry";
@@ -98,12 +54,8 @@
             }
         }
 
-        // Run validation when the page loads
         validatePayment();
-
-
-        document.getElementById("whatsappLink").href = "https://chat.whatsapp.com/GOSwsJeJcUkIgjlLEkVp8r";
     </script>
-</body>
 
+</body>
 </html>
