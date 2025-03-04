@@ -76,14 +76,30 @@
             const reference = urlParams.get('reference');
             const referrer = document.referrer;
 
-            if (!reference || !referrer.includes("paystack.com")) {
+            if (!reference) {
+                alert("No Payment Reference! Redirecting to Paystack...");
+                window.location.href = "https://paystack.com/pay/arenaentry";
+                return;
+            }
+
+            if (!referrer.includes("paystack.com")) {
                 alert("Unauthorized Access! Redirecting...");
                 window.location.href = "https://g-hive-arena.onrender.com";
                 return;
             }
 
-            // Automatically mark as successful if coming from Paystack
-            document.getElementById("ticketNumber").innerText = `Ticket Issued: ${reference}`;
+            try {
+                let response = await fetch(`https://g-hive-arena.onrender.com/verify-payment?reference=${reference}`);
+                let data = await response.json();
+
+                if (data.success) {
+                    document.getElementById("ticketNumber").innerText = data.ticket;
+                } else {
+                    document.getElementById("ticketNumber").innerText = "Payment Not Verified!";
+                }
+            } catch (error) {
+                document.getElementById("ticketNumber").innerText = "Error Validating Payment!";
+            }
         }
 
         validatePayment();
