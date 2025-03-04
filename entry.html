@@ -74,17 +74,10 @@
         async function validatePayment() {
             const urlParams = new URLSearchParams(window.location.search);
             const reference = urlParams.get('reference');
-            const referrer = document.referrer;
 
             if (!reference) {
                 alert("No Payment Reference! Redirecting to Paystack...");
                 window.location.href = "https://paystack.com/pay/arenaentry";
-                return;
-            }
-
-            if (!referrer.includes("paystack.com")) {
-                alert("Unauthorized Access! Redirecting...");
-                window.location.href = "https://g-hive-arena.onrender.com";
                 return;
             }
 
@@ -93,15 +86,19 @@
                 let data = await response.json();
 
                 if (data.success) {
-                    document.getElementById("ticketNumber").innerText = data.ticket;
+                    document.getElementById("ticketNumber").innerText = `Ticket Number: ${data.ticket}`;
+                    document.getElementById("entrySection").style.display = "block"; // Ensure the entry section is visible
                 } else {
-                    document.getElementById("ticketNumber").innerText = "Payment Not Verified!";
+                    alert("Payment not verified! Redirecting to Paystack...");
+                    window.location.href = "https://paystack.com/pay/arenaentry";
                 }
             } catch (error) {
-                document.getElementById("ticketNumber").innerText = "Error Validating Payment!";
+                alert("Error validating payment! Redirecting...");
+                window.location.href = "https://paystack.com/pay/arenaentry";
             }
         }
 
+        // Run validation when the page loads
         validatePayment();
 
 
