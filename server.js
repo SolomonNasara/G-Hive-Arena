@@ -1,36 +1,39 @@
 const express = require("express");
-const bodyParser = require("body-parser");
-const crypto = require("crypto");
+const fetch = require("node-fetch");
+const cors = require("cors");
 
 const app = express();
-const PORT = process.env.PORT || 3000;
+app.use(cors());
 
-app.use(bodyParser.json());
+const PAYSTACK_SECRET_KEY = "sk_live_xxxx"; // Replace with your Paystack Secret Key
 
-// Webhook endpoint
-app.post("/webhook", (req, res) => {
-    const secret = "YOUR_SECRET_KEY"; // Replace with your Paystack Secret Key
-    const hash = crypto.createHmac("sha512", secret).update(JSON.stringify(req.body)).digest("hex");
-
-    if (hash !== req.headers["x-paystack-signature"]) {
-        return res.status(400).send("Invalid signature");
-    }
-
-    const event = req.body;
+app.get("/verify-payment", async (req, res) => {
+    const reference = req.query.reference;
     
-    if (event.event === "charge.success") {
-        const reference = event.data.reference;
-        const amount = event.data.amount / 100; // Convert kobo to NGN
-        const customerEmail = event.data.customer.email;
-        
-        console.log(`Payment verified: Reference - ${reference}, Amount - ${amount}, Email - ${customerEmail}`);
-        
-        // Save this to a database or log file (for later retrieval)
+    if (!reference) {
+        return res.status(400).json({ success: false, message: "Reference is required" });
     }
 
-    res.sendStatus(200);
+    try {
+        let response = await fetch(`https://api.paystack.co/transaction/verify/${reference}`, {
+            method: "GET",
+            headers: {
+                "Authorization": `Bearer ${PAYSTACK_SECRET_KEY}`,
+                "Content-Type": "application/json"
+            }
+        });
+
+        let data = await response.json();
+
+        if (data.status && data.data.status === "success") {
+            return res.json({ success: true, ticket: "ARENA-" + Math.floor(10000 + Math.random() * 90000) });
+        } else {
+            return res.json({ success: false, message: "Payment not verified" });
+        }
+    } catch (error) {
+        return res.json({ success: false, message: "Error verifying payment" });
+    }
 });
 
-app.listen(PORT, () => {
-    console.log(`Webhook server running on port ${PORT}`);
-});
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
